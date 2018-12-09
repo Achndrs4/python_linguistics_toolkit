@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 phonetically_similar_segment = {
 
 'p':['b','f','pʰ','bʰ'], 
@@ -111,12 +113,12 @@ class Min_Edit_Distance_Calculator:
 
 def min_edit_distance(source, target):
 	sourceLen, targetLen = len(source), len(target)
-    if (sourceLen == 0):
-        return targetLen
-    if ((targetLen) == 0):
-        return sourceLen
+	if (sourceLen == 0):
+		return targetLen
+	if ((targetLen) == 0):
+		return sourceLen
 
-    dist = Matrix(sourceLen + 1, (targetLen) + 1)
-    dist = (Min_Edit_Distance_Calculator(source, target).initialize_distance_matrix(dist))
-    dist = Min_Edit_Distance_Calculator(source, target).calculate_recurrence(dist)
-    return dist[sourceLen][(targetLen)]
+	dist = Matrix(sourceLen + 1, (targetLen) + 1)
+	dist = (Min_Edit_Distance_Calculator(source, target).initialize_distance_matrix(dist))
+	dist = Min_Edit_Distance_Calculator(source, target).calculate_recurrence(dist)
+	return dist[sourceLen][(targetLen)]
