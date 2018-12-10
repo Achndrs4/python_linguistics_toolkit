@@ -1,60 +1,69 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
+
 phonetically_similar_segment = {
 
-'p':['b','f','pʰ','bʰ'], 
-'b':['pʰ','bʰ','p','m'], 
-'pʰ':['b','f','p','bʰ'], 
-'bʰ':['pʰ','b','p','m'], 
-'f':['p','v','θ'],
-
-'t':['tʰ','d','dʰ','z','k'],
-'tʰ':['θ','ð','t','d','z'], 
-'d':['t','z','dʰ'],
-'dʰ':['ð','d','z'],
-'dʰ':['d','z','ð'],
+'𝘝':['i','ɪ','e', 'ɛ','æ','a','ə','ɔ','ɒ','ʌ','o','ʊ','u','ᴶa', 'ᴶe', 'ᴶo', 'ᴶi','ᴶo','ᴶu','ᵂa', 'ᵂe','ᵂi','ᵂo','ᵂu'],
 
 
-'s':['z','θ','ð','ʒ','ʃ','h'],
-'z':['θ','s','ð','ʒ','ʃ'],
-'ð':['z','ʒ','ʃ','θ','s'],
-'θ':['z','θ','s'],
-'ʒ':['ʃ','d','z','θ','ð'],
-'ʃ':['ʒ','h','s','θ','ð','z'],
+'p':['b','f','pʰ','bʰ','p'], 
+'b':['pʰ','bʰ','p','b','m'], 
+'pʰ':['b','f','p','bʰ','pʰ'], 
+'bʰ':['pʰ','b','p','bʰ'], 
+'f':['p','v','θ','f'],
 
+'t':['tʰ','d','dʰ','z','k','t'],
+'tʰ':['θ','ð','t','d','z','tʰ'], 
+'d':['t','ð','d','z','d'],
+'dʰ':['d','z','ð','dʰ'],
 
-'m':['n' , 'ŋ'],
-'n':['m' , 'ŋ'],
-'ŋ':['n' , 'm'],
+'r':['r',''], 
 
-'w':['v'],
-'v':['v','b'],
+'s':['z','θ','ð','ʒ','ʃ','h','s'],
+'z':['θ','s','ð','ʒ','ʃ','z'],
+'ð':['z','ʒ','ʃ','θ','s','ð'],
+'θ':['z','θ','s','θ'],
+'ʒ':['ʃ','d','z','θ','ð','ʒ'],
+'ʃ':['ʒ','h','s','θ','ð','z','ʃ'],
 
-'k':['g','?', 'kʰ','kʷ','q','x', 'kʷ'],
-'kʷ':['gʷ', 'kʰ','k','qʷ','x','q'],
-'kʰ':['gʰ','?','k','kʰ','kʷ','q','x', 'kʷ','h'],
-'g':['gʷ','gʰ', 'kʰ','kʷ','q','x','h','kʷ'],
-'gʷ':['kʷ', 'h','kʰ','g','qʷ','q'],
-'gʰ':['kʰ','?','h','kʰ'],
+'m':['n', 'nm', 'ŋ', 'm'],
+'n':['m' , 'ŋ', 'n'],
+'ŋ':['n' , 'm', 'ŋ'],
 
-'?':['h','','x'],
-'x':['k','kʰ','q'],
-'q':['?','k','kʰ','kʷ'],
-'h':['?', '', 'q', 'x' ,'gʰ','kʰ','s']
+'w':['v', 'j', 'w'],
+'v':['v','b', 'w'],
+
+'k':['g','?', 'kʰ','kʷ','q','x', 'kʷ','k'],
+'kʷ':['gʷ', 'kʰ','k','qʷ','x','q','kʷ'],
+'kʰ':['gʰ','?','k','kʰ','kʷ','q','x', 'kʷ','h','kʰ'],
+'g':['gʷ','gʰ', 'kʰ','kʷ','q','x','h','kʷ','g'],
+'gʷ':['kʷ', 'h','kʰ','g','qʷ','q','gʷ'],
+'gʰ':['kʰ','?','h','kʰ','gʰ'],
+
+'?':['h','','x','?'],
+'x':['k','kʰ','q','x'],
+'q':['?','k','kʰ','kʷ','q'],
+'h':['?', '', 'q', 'x' ,'gʰ','kʰ','s','h']
 }
+
+vowels = ('a','e','i','o','u','i','ɪ','e', 'ɛ','æ','a','ə','ɔ','ɒ','ʌ','o','ʊ','u','ᴶa', 'ᴶe', 'ᴶo', 'ᴶi','ᴶo','ᴶu','ᵂa', 'ᵂe','ᵂi','ᵂo','ᵂu')
 
 def del_cost():
     return 1
-
 
 def ins_cost():
     return 1
 
 
 def sub_cost(source, target):
-    if (target not in phonetically_similar_segment[source]):
-        return 2
-    return 0
+	if(target == source):
+		return 0
+	if source in vowels and target in vowels:
+		return 1
+	if source in phonetically_similar_segment:	
+		if(target in phonetically_similar_segment[source]):
+			return 1
+	return 2
 
 
 class Matrix:
@@ -103,9 +112,9 @@ class Min_Edit_Distance_Calculator:
     def calculate_recurrence(self, distances):
         for i in range(1, distances.numRows):
             for j in range(1, distances.numCols):
-                delete_cost = distances[i - 1][j] + del_cost(self.source[i - 1])
+                delete_cost = distances[i - 1][j] + del_cost()
                 substitution_cost = (distances[i - 1][j - 1]) + sub_cost(self.source[i - 1], self.target[j - 1])
-                insert_cost = (distances[i][j - 1]) + ins_cost(self.target[j - 1])
+                insert_cost = (distances[i][j - 1]) + ins_cost()
                 distances[i][j] = min(delete_cost, substitution_cost, insert_cost)
         return distances
     # minimum edit distance algorithm
