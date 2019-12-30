@@ -1,4 +1,3 @@
-# python_linguistics_toolkit
-Linguistic Toolkit with GUI for Python
+# Python Linguistics Toolkit
+Linguistic Toolkit with GUI for Python that tracks drifts and changes in morphology/phonology
 
-Linguistic toolkit that tracks drifts and changes in morphology/phonology
